@@ -22,14 +22,3 @@ Hẹn giờ (Trước 1 ngày / 12 tiếng) thông báo cuộc hẹn cho Patient
 
 
 
-
-Bầu cử -- Dealine : ...
-User : Tên , tuổi , User/pass/, email , sđt , isVote, dateVote
-  Delegate : Chức vụ , Cống hiến [], đại giải [], Số phiếu
-  Citizen : Số CCCD,  Địa chỉ
-Votes : idDelegate , idCitizen
-
-Citizen xem all Delegate , sẽ chọn 1 trong những Delegate (Số phiếu của Delegate + 1)
-Khi còn dealine : ko thể sửa , chỉ có thể xóa vote (Số phiếu của Delegate + 1), ròi có thể vote lại
-Khi hết dealine : giữ nguyên giá trị
-Dùng cron để lưu giá trị người vô địch sau Dealine 
