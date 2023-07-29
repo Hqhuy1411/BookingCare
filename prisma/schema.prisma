@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model User {
+  id           Int          @default(autoincrement()) @id
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  email        String       @unique
+  name         String?
+  role         Role
+  password     String
+  appointmentsAsDoctor Appointment[] @relation("DoctorAppointments")
+  appointmentsAsPatient Appointment[] @relation("PatientAppointments")
+  profile Profile?
+  comments Comment[]
+
+}
+model Profile {
+  id           Int  @id @default(autoincrement())
+  address       String?
+  degree        String?
+  major         String?
+  doctor        User    @relation(fields: [userEmail], references: [email])
+  userEmail     String @unique
+}
+model Appointment {
+  id         Int       @default(autoincrement()) @id
+  createdAt  DateTime  @default(now())
+  date       DateTime
+  doctor     User     @relation("DoctorAppointments", fields: [doctorId], references: [id])
+  doctorId   Int
+  patient    User     @relation("PatientAppointments", fields: [patientId], references: [id])
+  patientId  Int
+  isCancel Boolean @default(false)
+  isFinshed Boolean @default(false)
+  isAcceptByDoctor Boolean?
+  isCancelByPatient Boolean?
+  descriptionByPatient String?
+  record Record?
+  }
+model Record {
+  id         Int       @default(autoincrement()) @id
+  doctorId   Int
+  patientId  Int
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+  appointmentId Int    @unique
+  disease   String
+  medicines String?
+  nextDate  DateTime?
+}
+model Comment {
+  id          Int      @default(autoincrement()) @id
+  description String?
+  star Float
+  byPatient Int 
+  doctor   User @relation(fields: [toDoctor], references: [id])
+  toDoctor Int
+}
+
+enum Role {
+  DOCTOR
+  PATIENT
+}
